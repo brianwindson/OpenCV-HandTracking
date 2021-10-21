@@ -2,6 +2,7 @@ import cv2
 import mediapipe as mp
 import time
 from PySimpleGUI import PySimpleGUI as sg
+import os
 
 # Layout
 sg.theme('Reddit')
@@ -36,7 +37,10 @@ while True:
             mpDraw = mp.solutions.drawing_utils
             pTime = 0
             cTime = 0
-            arquivo = open(usuario + ".csv", "w", 1)
+            i = 0
+            while os.path.exists(usuario + "%s.csv" % i):
+                i += 1
+            arquivo = open(usuario + "%s.csv" % i, "w", 1)
             # arquivo.write("interacao;x;y\n\n")
             i = 1
             while cap.isOpened():
