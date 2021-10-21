@@ -4,6 +4,13 @@ import time
 from PySimpleGUI import PySimpleGUI as sg
 import os
 
+# DEFINICOES  DA CAMERA
+camera_Width = 320  # 480 # 640 # 1024 # 1280
+camera_Heigth = 240  # 320 # 480 # 780  # 960
+frameSize = (camera_Width, camera_Heigth)
+
+webcam_layout = [[sg.Image(filename="", key="cam")]]
+webcam = sg.Column(webcam_layout, element_justification='top-right')
 # Layout
 sg.theme('Reddit')
 key = ''
@@ -15,15 +22,18 @@ layout = [
     [sg.Checkbox('Salvar Login?')],
     # [sg.Slider(range=(0,255),default_value=0,orientation='h',size=(30,20),key='sliderVelocidade')],
     [sg.Button('Entrar')],
+    [webcam],
     [sg.Output(size=(30, 20))],
-    [sg.Image(filename="", key="cam")]
+    #[sg.Image(filename="", key="cam")]
+
 ]
 
 
 # Janela
-janela = sg.Window('Tela de Login para inicio de leitura de Mãos', layout)
+janela = sg.Window('Tela de Login para inicio de leitura de Mãos', layout).Finalize()
 # Ler eventos
 while True:
+    janela.Maximize()
     eventos, valores = janela.read()
     if eventos == sg.WINDOW_CLOSED:
         break
@@ -82,7 +92,15 @@ while True:
                 pTime = cTime
                 # cv2.putText(img, str(int(fps)), (10, 70),cv2.FONT_HERSHEY_PLAIN,3(255, 0, 255),3 )
 
-                # cv2.imshow("image", img)
+               #  cv2.imshow("image", img)
+
+                #redimensiona a camera
+                ret, frameOrig = cap.read()
+                frame = cv2.resize(frameOrig, frameSize)
+                #atualiza a imagem recebida na janela
+                imgbytes = cv2.imencode(".png", img)[1].tobytes()
+                janela["cam"].update(data=imgbytes)
+
                 # cv2.waitKey(1)
 
                 if cv2.waitKey(10) & 0xFF == ord('q'):
