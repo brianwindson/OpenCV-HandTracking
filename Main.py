@@ -15,8 +15,10 @@ layout = [
     [sg.Checkbox('Salvar Login?')],
     # [sg.Slider(range=(0,255),default_value=0,orientation='h',size=(30,20),key='sliderVelocidade')],
     [sg.Button('Entrar')],
-    [sg.Output(size=(30, 20))]
+    [sg.Output(size=(30, 20))],
+    [sg.Image(filename="", key="cam")]
 ]
+
 
 # Janela
 janela = sg.Window('Tela de Login para inicio de leitura de Mãos', layout)
@@ -40,9 +42,11 @@ while True:
             i = 0
 
             if os.path.exists("%s//" % usuario + usuario + "%s.csv" % i):
-                i += 1
+                while os.path.exists("%s//" % usuario + usuario + "%s.csv" % i):
+                    i += 1
             else:
                 os.mkdir(usuario)
+
             arquivo = open("%s//" % usuario + usuario + "%s.csv" % i, "w", 1)
             # arquivo.write("interacao;x;y\n\n")
             i = 1
@@ -68,6 +72,7 @@ while True:
                                 # parte2=str(parte1,',',coordenaday)
                                 linhaescrita = iteracao + ';' + coordenadax + ';' + coordenaday + '\n'
                                 i = i + 1
+
                                 arquivo.write(linhaescrita)
 
                         mpDraw.draw_landmarks(img, handLms, mpHands.HAND_CONNECTIONS)
@@ -77,7 +82,7 @@ while True:
                 pTime = cTime
                 # cv2.putText(img, str(int(fps)), (10, 70),cv2.FONT_HERSHEY_PLAIN,3(255, 0, 255),3 )
 
-                cv2.imshow("image", img)
+                # cv2.imshow("image", img)
                 # cv2.waitKey(1)
 
                 if cv2.waitKey(10) & 0xFF == ord('q'):
