@@ -38,9 +38,12 @@ while True:
             pTime = 0
             cTime = 0
             i = 0
-            while os.path.exists(usuario + "%s.csv" % i):
+
+            if os.path.exists("%s//" % usuario + usuario + "_%s.csv" % i):
                 i += 1
-            arquivo = open(usuario + "%s.csv" % i, "w", 1)
+            else:
+                os.mkdir(usuario)
+            arquivo = open("%s//" % usuario + usuario + "_%s.csv" % i, "w", 1)
             # arquivo.write("interacao;x;y\n\n")
             i = 1
             while cap.isOpened():
