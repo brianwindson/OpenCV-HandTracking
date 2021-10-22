@@ -4,40 +4,47 @@ import time
 from PySimpleGUI import PySimpleGUI as sg
 import os
 
-
-
 # DEFINICOES  DA CAMERA
 camera_Width = 320  # 480 # 640 # 1024 # 1280
 camera_Heigth = 240  # 320 # 480 # 780  # 960
 frameSize = (camera_Width, camera_Heigth)
 
-webcam_layout = [[sg.Image(filename="", key="cam")]]
-webcam = sg.Column(webcam_layout, element_justification='right')
+# webcam_layout = [[sg.Image(filename="", key="cam")]]
+# webcam = sg.Column(webcam_layout)
 # Layout
 sg.theme('Reddit')
 key = ''
-layout = [
+
+# COLUNAS DA GUI
+coluna_esq = [
     [sg.Text('Usuário'), sg.Input(key='usuario', size=(45, 1))],
     [sg.Text('Idade'), sg.Input(key='idade', size=(5, 0))],
-    # [sg.Text('Senha'), sg.Input(key='senha', password_char='*', size=(45, 1))],
     [sg.Text('Altura'), sg.Input(key='altura', size=(5, 0))],
     [sg.Text('Peso'), sg.Input(key='peso', size=(5, 0))],
-
-    # [sg.Checkbox('Masculino', key='masculino'), sg.Checkbox('Feminino', key='feminino')],
-    [sg.Checkbox('Salvar Login?')],
-    # [sg.Slider(range=(0,255),default_value=0,orientation='h',size=(30,20),key='sliderVelocidade')],
     [sg.Button('Entrar')],
-    [webcam],
-    [sg.Output(size=(30, 20))],
-    # [sg.Image(filename="", key="cam")]
+]
+
+coluna_cen = [
+
+    [sg.Output(size=(20, 20))],
+]
+
+coluna_dir = [
+    [sg.Image(filename="", key="cam")],
+]
+
+layout = [
+    [sg.Column(coluna_esq),
+     sg.Column(coluna_cen),
+     sg.Column(coluna_dir)],
 
 ]
 
 # Janela
-janela = sg.Window('Tela de Login para inicio de leitura de Mãos', layout).Finalize()
+janela = sg.Window('Tela de Login para inicio de leitura de Mãos', layout).finalize()
 # Ler eventos
 while True:
-    janela.Maximize()
+
     eventos, valores = janela.read()
     if eventos == sg.WINDOW_CLOSED:
         break
@@ -58,7 +65,7 @@ while True:
             arq = "%s_%s_%s_%s_" % (usuario, idade, altura, peso)
 
             if os.path.exists(usuario):
-                while os.path.exists("%s/%s%d.csv" % (usuario,  arq, i)):
+                while os.path.exists("%s/%s%d.csv" % (usuario, arq, i)):
                     i += 1
 
             else:
