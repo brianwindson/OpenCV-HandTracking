@@ -24,10 +24,9 @@ layout = [
     [sg.Button('Entrar')],
     [webcam],
     [sg.Output(size=(30, 20))],
-    #[sg.Image(filename="", key="cam")]
+    # [sg.Image(filename="", key="cam")]
 
 ]
-
 
 # Janela
 janela = sg.Window('Tela de Login para inicio de leitura de Mãos', layout).Finalize()
@@ -49,15 +48,17 @@ while True:
             mpDraw = mp.solutions.drawing_utils
             pTime = 0
             cTime = 0
-            i = 0
+            i = 00
+            arq = "%s_%sanos_" % (usuario, idade)
 
-            if os.path.exists("%s//" % usuario + usuario + "%s.csv" % i):
-                while os.path.exists("%s//" % usuario + usuario + "%s.csv" % i):
+            if os.path.exists(usuario):
+                while os.path.exists("%s/%s%d.csv" % (usuario,  arq, i)):
                     i += 1
+
             else:
                 os.mkdir(usuario)
 
-            arquivo = open("%s//" % usuario + usuario + "%s.csv" % i, "w", 1)
+            arquivo = open("%s/%s%d.csv" % (usuario, arq, i), "w", 1)
             # arquivo.write("interacao;x;y\n\n")
             i = 1
             while cap.isOpened():
@@ -92,12 +93,12 @@ while True:
                 pTime = cTime
                 # cv2.putText(img, str(int(fps)), (10, 70),cv2.FONT_HERSHEY_PLAIN,3(255, 0, 255),3 )
 
-               #  cv2.imshow("image", img)
+                #  cv2.imshow("image", img)
 
-                #redimensiona a camera
+                # redimensiona a camera
                 ret, frameOrig = cap.read()
                 frame = cv2.resize(frameOrig, frameSize)
-                #atualiza a imagem recebida na janela
+                # atualiza a imagem recebida na janela
                 imgbytes = cv2.imencode(".png", img)[1].tobytes()
                 janela["cam"].update(data=imgbytes)
 
