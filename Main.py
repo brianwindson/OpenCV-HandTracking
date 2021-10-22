@@ -4,21 +4,26 @@ import time
 from PySimpleGUI import PySimpleGUI as sg
 import os
 
+
+
 # DEFINICOES  DA CAMERA
 camera_Width = 320  # 480 # 640 # 1024 # 1280
 camera_Heigth = 240  # 320 # 480 # 780  # 960
 frameSize = (camera_Width, camera_Heigth)
 
 webcam_layout = [[sg.Image(filename="", key="cam")]]
-webcam = sg.Column(webcam_layout, element_justification='top-right')
+webcam = sg.Column(webcam_layout, element_justification='right')
 # Layout
 sg.theme('Reddit')
 key = ''
 layout = [
     [sg.Text('Usuário'), sg.Input(key='usuario', size=(45, 1))],
     [sg.Text('Idade'), sg.Input(key='idade', size=(5, 0))],
-    [sg.Text('Senha'), sg.Input(key='senha', password_char='*', size=(45, 1))],
-    [sg.Checkbox('Masculino', key='masculino'), sg.Checkbox('Feminino', key='feminino')],
+    # [sg.Text('Senha'), sg.Input(key='senha', password_char='*', size=(45, 1))],
+    [sg.Text('Altura'), sg.Input(key='altura', size=(5, 0))],
+    [sg.Text('Peso'), sg.Input(key='peso', size=(5, 0))],
+
+    # [sg.Checkbox('Masculino', key='masculino'), sg.Checkbox('Feminino', key='feminino')],
     [sg.Checkbox('Salvar Login?')],
     # [sg.Slider(range=(0,255),default_value=0,orientation='h',size=(30,20),key='sliderVelocidade')],
     [sg.Button('Entrar')],
@@ -38,9 +43,10 @@ while True:
         break
     if eventos == 'Entrar':
         if valores['usuario'] != '':
-
+            altura = valores['altura']
             usuario = valores['usuario']
             idade = valores['idade']
+            peso = valores['peso']
             print('Bem vindo a Captura de Dados!')
             cap = cv2.VideoCapture(0)
             mpHands = mp.solutions.hands
@@ -48,8 +54,8 @@ while True:
             mpDraw = mp.solutions.drawing_utils
             pTime = 0
             cTime = 0
-            i = 00
-            arq = "%s_%sanos_" % (usuario, idade)
+            i = 0
+            arq = "%s_%s_%s_%s_" % (usuario, idade, altura, peso)
 
             if os.path.exists(usuario):
                 while os.path.exists("%s/%s%d.csv" % (usuario,  arq, i)):
