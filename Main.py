@@ -1,8 +1,7 @@
 
 from PySimpleGUI import PySimpleGUI as sg
 import os
-from Func import HandSub
-
+from Func import HandCap
 # DEFINICOES  DA CAMERA
 camera_Width = 320  # 480 # 640 # 1024 # 1280
 camera_Heigth = 240  # 320 # 480 # 780  # 960
@@ -24,7 +23,6 @@ coluna_esq = [
 ]
 
 coluna_cen = [
-    [sg.Button('Parar')],
     [sg.Output(size=(20, 20))],
 ]
 
@@ -65,4 +63,5 @@ while True:
             arquivo = open("%s/%s%d.csv" % (usuario, arq, i), "w", 1)
             # arquivo.write("interacao;x;y\n\n")
             i = 1
-            HandSub.capturar(frameSize, janela, arquivo)
+            HandCap.capturar(frameSize, janela, arquivo)
+

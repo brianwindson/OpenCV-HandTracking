@@ -2,6 +2,7 @@ import cv2
 import mediapipe as mp
 import time
 import matplotlib.pyplot as plt
+import csv
 
 
 cap = cv2.VideoCapture(1)
@@ -13,12 +14,12 @@ cTime = 0
 aux = 0
 
 
-class HandSub:
+class HandCap:
 
     def __init__(self):
         pass
 
-    def capturar(frameSize, janela, arquivo):
+    def capturar(frameSize, janela, arquivo, eventos):
         i = 1
         while cap.isOpened():
 
@@ -37,13 +38,14 @@ class HandSub:
                         print(id, cx, cy)
                         if id == 8:
                             cv2.circle(img, (cx, cy), 15, (255, 0, 255), cv2.FILLED)
-
                             coordenadax = str(cx)
                             coordenaday = str(cy)
                             iteracao = str(i)
                             i = i + 1
                             linhaescrita = iteracao + ';' + coordenadax + ';' + coordenaday + '\n'
                             arquivo.write(linhaescrita)
+
+
 
                     mpDraw.draw_landmarks(img, handLms, mpHands.HAND_CONNECTIONS)
 
@@ -54,6 +56,7 @@ class HandSub:
             # redimensiona a camera
             ret, frameOrig = cap.read()
             frame = cv2.resize(frameOrig, frameSize)
+
             # atualiza a imagem recebida na janela
             imgbytes = cv2.imencode(".png", img)[1].tobytes()
             janela["cam"].update(data=imgbytes)
