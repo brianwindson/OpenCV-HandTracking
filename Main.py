@@ -63,5 +63,5 @@ while True:
             arquivo = open("%s/%s%d.csv" % (usuario, arq, i), "w", 1)
             # arquivo.write("interacao;x;y\n\n")
             i = 1
-            HandCap.capturar(frameSize, janela, arquivo)
+            HandCap.capturar(frameSize, janela, arquivo, eventos)
 
