@@ -1,9 +1,13 @@
+import os
+import sys
+
+import PySimpleGUI
 import cv2
 import mediapipe as mp
 import time
 import matplotlib.pyplot as plt
 import csv
-
+import time
 
 cap = cv2.VideoCapture(1)
 mpHands = mp.solutions.hands
@@ -21,8 +25,9 @@ class HandCap:
 
     def capturar(frameSize, janela, arquivo, eventos):
         i = 1
-        while cap.isOpened():
+        tempodecaptura = time.time() + 5  # agora + tempo em segundos
 
+        while cap.isOpened():
             success, img = cap.read()
             imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
             results = hands.process(imgRGB)
@@ -31,8 +36,8 @@ class HandCap:
             if results.multi_hand_landmarks:
 
                 for handLms in results.multi_hand_landmarks:
-                    for id, lm in enumerate(handLms.landmark):
 
+                    for id, lm in enumerate(handLms.landmark):
                         h, w, c = img.shape
                         cx, cy = int(lm.x * w), int(lm.y * h)
                         print(id, cx, cy)
@@ -45,10 +50,9 @@ class HandCap:
                             linhaescrita = iteracao + ';' + coordenadax + ';' + coordenaday + '\n'
                             arquivo.write(linhaescrita)
 
-
-
-                    mpDraw.draw_landmarks(img, handLms, mpHands.HAND_CONNECTIONS)
-
+                mpDraw.draw_landmarks(img, handLms, mpHands.HAND_CONNECTIONS)
+            if time.time() > tempodecaptura:
+                break
             cTime = time.time()
             # fps = 1 / (cTime - pTime)
             pTime = cTime
@@ -58,6 +62,7 @@ class HandCap:
             frame = cv2.resize(frameOrig, frameSize)
 
             # atualiza a imagem recebida na janela
+
             imgbytes = cv2.imencode(".png", img)[1].tobytes()
             janela["cam"].update(data=imgbytes)
 

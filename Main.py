@@ -1,7 +1,7 @@
-
 from PySimpleGUI import PySimpleGUI as sg
 import os
 from Func import HandCap
+
 # DEFINICOES  DA CAMERA
 camera_Width = 320  # 480 # 640 # 1024 # 1280
 camera_Heigth = 240  # 320 # 480 # 780  # 960
@@ -24,6 +24,7 @@ coluna_esq = [
 
 coluna_cen = [
     [sg.Output(size=(20, 20))],
+
 ]
 
 coluna_dir = [
@@ -64,4 +65,3 @@ while True:
             # arquivo.write("interacao;x;y\n\n")
             i = 1
             HandCap.capturar(frameSize, janela, arquivo, eventos)
-
