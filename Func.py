@@ -52,6 +52,7 @@ class HandCap:
 
                 mpDraw.draw_landmarks(img, handLms, mpHands.HAND_CONNECTIONS)
             if time.time() > tempodecaptura:
+                cap.release()
                 break
             cTime = time.time()
             # fps = 1 / (cTime - pTime)
@@ -66,5 +67,21 @@ class HandCap:
             imgbytes = cv2.imencode(".png", img)[1].tobytes()
             janela["cam"].update(data=imgbytes)
 
-    def plotagraf(self):
-        pass
+    def plotagraf(auxarq):
+        x = []
+        y = []
+
+        with open(auxarq, "r") as csvfile:
+            plots= csv.reader(csvfile, delimiter=';')
+            for row in plots:
+                x.append(int(row[1]))
+                y.append(int(row[2]))
+
+        plt.plot(x, y, marker='o')
+
+        plt.title('Resultado da captura:')
+
+        plt.xlabel('x')
+        plt.ylabel('y')
+
+        plt.show()
